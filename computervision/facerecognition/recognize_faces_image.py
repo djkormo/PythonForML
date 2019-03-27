@@ -6,6 +6,21 @@ import face_recognition
 import argparse
 import pickle
 import cv2
+import numpy as np
+import PIL
+from IPython.display import display
+
+def cv2_imshow(a):
+  """A replacement for cv2.imshow() for use in Jupyter notebooks."""
+  a = a.clip(0, 255).astype('uint8')
+  # cv2 stores colors as BGR; convert to RGB
+  if a.ndim == 3:
+    if a.shape[2] == 4:
+      a = cv2.cvtColor(a, cv2.COLOR_BGRA2RGBA)
+    else:
+      a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
+  display(PIL.Image.fromarray(a)) 
+  
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -75,5 +90,5 @@ for ((top, right, bottom, left), name) in zip(boxes, names):
 		0.75, (0, 255, 0), 2)
 
 # show the output image
-cv2.imshow("Image", image)
+cv2.cv2_imshow(image)
 cv2.waitKey(0)
